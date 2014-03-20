@@ -174,7 +174,7 @@ namespace Leo.DB
         /// <summary>
         /// 保存页面的内容
         /// </summary>
-        public static void SavePage(int id, string page_url, int parent_id, string title, string date)
+        public static string SavePage(int id, string page_url, int parent_id, string title, string date)
         {
             // 先判断目录下存在不存在
             
@@ -184,17 +184,33 @@ namespace Leo.DB
 
             // 应该保存的目录名称
             string dir_name = string.Format("{0:0000}", parent_id);
-            if (!System.IO.Directory.Exists(dir_name))
-                System.IO.Directory.CreateDirectory(dir_name);
+            if (!System.IO.Directory.Exists("pages/"+dir_name))
+                System.IO.Directory.CreateDirectory("pages/" + dir_name);
 
             // 取得保存的内容
-            string content = string.Format("<h1>{0}<h1><div>{1}</div><div>{2}</div>",
+            string template = @"
+<HTML><HEAD><link href='../style.css'rel='stylesheet'type='text/css'></HEAD><BODY text=#000000 vLink=#990000 aLink=#990000 link=#990000 leftMargin=0 topMargin=0 marginheight=0 marginwidth=0 Bgcolor=#E7F4FE class=Body style='word-break:break-all'><table border='0'height='98'cellpadding='0'cellspacing='0'width=100%id='main'><tr><td width='100%'align='left'valign='top'><br><br></TD></TR><TR vAlign=center align=left><TD height='295'valign='top'align='left'><TABLE cellSpacing=0 borderColorDark=#999999 cellPadding=0 align=center borderColorLight=#ffffff border='0'style='line-height:150%;'WIDTH='90%'><TBODY><TR vAlign=top align=left><TD id='thetd'class='thetd'><div align='left'style='width: 100%; height: 132'><p align='left'><center><font class='article_title'>{0}</font></center><br><hr size='1'noshade color='#FF9900'><span id='content'><!--BookContent Start-->{1}<br/><br/>&nbsp;&nbsp;<!--BookContent End--><br/><br/></span></p></div></TD></TR></TBODY></TABLE></TD></TR></TABLE><br></BODY></HTML>
+";
+
+            string content = string.Format(template,
                                             title,
-                                            date,
                                             Leo.Reg.Sasac.GetLinkContent(page_url));
             string file_name = string.Format("{0:00000000}",id);
-            string path = string.Format("./{0}/{1}.html", dir_name, file_name);
+            string path = string.Format("./pages/{0}/{1}.html", dir_name, file_name);
             System.IO.File.WriteAllText(path, content, Encoding.UTF8);
+            return path;
+        }
+
+        public static string GetFile(int id, int parent_id)
+        {
+            string dir_name = string.Format("{0:0000}", parent_id);
+            string file_name = string.Format("{0:00000000}", id);
+            string path = string.Format("./pages/{0}/{1}.html", dir_name, file_name);
+
+            if (!System.IO.File.Exists(path))
+                return "";
+            else
+                return path;
         }
     }
 }

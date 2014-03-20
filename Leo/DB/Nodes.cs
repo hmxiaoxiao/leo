@@ -85,6 +85,25 @@ namespace Leo.DB
             }
         }
 
+        public int UnreadCount()
+        {
+            if (ID <= 0)
+                return 0;
+
+            using (SQLiteConnection connection = new SQLiteConnection(DBParams.ConnectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format("select count(*) from Contents where node_id = {0} and isread = 'N'", ID);
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command);
+                    DataTable data = new DataTable();
+                    adapter.Fill(data);
+                    return int.Parse(data.Rows[0][0].ToString());
+                }
+            }
+        }
+
         public static List<Nodes> Select(string where = "")
         {
             using (SQLiteConnection connection = new SQLiteConnection(DBParams.ConnectionString))

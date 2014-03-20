@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Leo.Reg;
 using HtmlAgilityPack;
 using Leo.DB;
+using Leo.GUI;
 
 namespace Leo
 {
@@ -18,16 +19,16 @@ namespace Leo
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new winMain());
 
 
-            string page = "http://www.sasac.gov.cn/n1180/n20240/n20259/index.html";
-            Console.WriteLine(page);
+            //string page = "http://www.sasac.gov.cn/n1180/n20240/n20259/index.html";
+            //Console.WriteLine(page);
 
-            Contents c = Contents.Select()[0];
-            Contents.SavePage(c.ID, c.URL, c.NodeID, c.Title, c.CDate);
+            //Contents c = Contents.Select()[0];
+            //Contents.SavePage(c.ID, c.URL, c.NodeID, c.Title, c.CDate);
 
             //RunAnalyze();
             //Console.WriteLine("按回车键结束");
