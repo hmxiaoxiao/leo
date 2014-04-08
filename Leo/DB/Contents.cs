@@ -68,6 +68,15 @@ namespace Leo.DB
                     DataTable data = new DataTable();
                     adapter.Fill(data);
                     ID = int.Parse(data.Rows[0][0].ToString());
+
+                    // 保存之后下载文件
+                    Contents.SavePage(ID, URL, NodeID, Title, CDate);
+
+                    
+                    // 触发已经保存事件
+                    ContentEventArgs e = new ContentEventArgs(ID, URL, Title, CDate, NodeID);
+                    OnSaved(e);
+
                     return true;
                 }
             }
@@ -82,14 +91,15 @@ namespace Leo.DB
                 connection.Open();
                 using (SQLiteCommand command = connection.CreateCommand())
                 {
-                    const string sql = "Update Contents Set Title = @title, cdate = @cdate, node_id = @nodeid, isread = @isread, isdown = @isdown";
+                    const string sql = "Update Contents Set Title = @title, cdate = @cdate, node_id = @nodeid, isread = @isread, isdown = @isdown where id = @id";
                     command.CommandText = sql;
                     command.Parameters.AddWithValue("@title", Title);
                     command.Parameters.AddWithValue("@cdate", CDate);
-                    command.Parameters.AddWithValue("@node_id", NodeID);
+                    command.Parameters.AddWithValue("@nodeid", NodeID);
                     command.Parameters.AddWithValue("@isread", IsRead);
                     command.Parameters.AddWithValue("@isdown", IsDown);
                     command.Parameters.AddWithValue("@url", URL);
+                    command.Parameters.AddWithValue("@id", ID);
                     command.ExecuteScalar();
                     return true;
                 }
@@ -161,12 +171,12 @@ namespace Leo.DB
             if (Contents.Select(string.Format("url = '{0}'", e.url)).Count == 0)
             {
                 // 不存在就要保存到数据库里面。
-                Contents content = new Contents();
-                content.Title = e.title;
-                content.URL = e.url;
-                content.CDate = e.date;
-                content.NodeID = e.parent_id;
-                content.Insert();
+                //Contents content = new Contents();
+                this.Title = e.title;
+                this.URL = e.url;
+                this.CDate = e.date;
+                this.NodeID = e.parent_id;
+                this.Insert();
             }
         }
 
@@ -201,7 +211,9 @@ namespace Leo.DB
             return path;
         }
 
-        public static string GetFile(int id, int parent_id)
+
+        // 取得文件路径 
+        public static string GetFilePath(int id, int parent_id)
         {
             string dir_name = string.Format("{0:0000}", parent_id);
             string file_name = string.Format("{0:00000000}", id);
@@ -211,6 +223,63 @@ namespace Leo.DB
                 return "";
             else
                 return path;
+        }
+
+
+        public void SetRead()
+        {
+            if (!"Y".Equals(IsRead))
+            {
+                this.IsRead = "Y";
+                this.Update();
+
+                // 触发已经保存事件
+                ContentEventArgs e = new ContentEventArgs(ID, URL, Title, CDate, NodeID);
+                OnReaded(e);
+            }
+        }
+
+        // 声明委托
+        public delegate void SavedLinkEventHandle(Object sender, ContentEventArgs e);
+        public event SavedLinkEventHandle SavedLink;      // 声明事件
+
+        public delegate void ReadLinkEventHandle(object sender, ContentEventArgs e);
+        public event ReadLinkEventHandle ReadLink;
+
+
+        //  委托参数
+        public class ContentEventArgs : EventArgs
+        {
+            public readonly int id;
+            public readonly string url;
+            public readonly string title;
+            public readonly string date;
+            public readonly int parent_id;
+            public ContentEventArgs(int id, string url, string title, string date, int parent_id)
+            {
+                this.id = id;
+                this.url = url;
+                this.title = title;
+                this.date = date;
+                this.parent_id = parent_id;
+            }
+        }
+
+        // 事件实现
+        protected virtual void OnSaved(ContentEventArgs e)
+        {
+            if (SavedLink != null)
+            {
+                SavedLink(this, e);
+            }
+        }
+
+        protected virtual void OnReaded(ContentEventArgs e)
+        {
+            if (ReadLink != null)
+            {
+                ReadLink(this, e);
+            }
         }
     }
 }

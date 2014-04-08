@@ -39,12 +39,12 @@
             this.date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsRead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.parent_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pageurl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.treeMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuTreeUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTreeUpdateAll = new System.Windows.Forms.ToolStripMenuItem();
             this.gridMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuGridRedownload = new System.Windows.Forms.ToolStripMenuItem();
-            this.pageurl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -176,6 +176,13 @@
             this.parent_id.ReadOnly = true;
             this.parent_id.Visible = false;
             // 
+            // pageurl
+            // 
+            this.pageurl.HeaderText = "pageurl";
+            this.pageurl.Name = "pageurl";
+            this.pageurl.ReadOnly = true;
+            this.pageurl.Visible = false;
+            // 
             // treeMenu
             // 
             this.treeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -210,13 +217,6 @@
             this.menuGridRedownload.Name = "menuGridRedownload";
             this.menuGridRedownload.Size = new System.Drawing.Size(124, 22);
             this.menuGridRedownload.Text = "重新下载";
-            // 
-            // pageurl
-            // 
-            this.pageurl.HeaderText = "pageurl";
-            this.pageurl.Name = "pageurl";
-            this.pageurl.ReadOnly = true;
-            this.pageurl.Visible = false;
             // 
             // winMain
             // 

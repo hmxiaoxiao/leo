@@ -157,12 +157,12 @@ namespace Leo.Reg
                     // 判断地址是否已经存在，如果不存在，那么至少要检查下一页的数据
                     if (Leo.DB.Contents.Select(string.Format("url = '{0}'", url)).Count == 0)
                         finded = false;
+
+
                     LinkEventArgs e = new LinkEventArgs(url,
                                                         hn.SelectNodes("td/a")[0].Attributes["title"].Value,
                                                         hn.SelectNodes("td")[1].InnerText,
                                                         parent_id);
-
-
                     OnFinded(e);
                     GetLinkContent(e.url);
 
