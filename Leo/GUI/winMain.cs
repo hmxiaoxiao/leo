@@ -16,7 +16,7 @@ namespace Leo.GUI
 {
     public partial class winMain : Form
     {
-        private string node_id = "0";
+        private string m_Current_Select_ID = "0";
 
         public winMain()
         {
@@ -34,9 +34,12 @@ namespace Leo.GUI
             foreach (Nodes n in list)
             {
                 TreeNode leaf = new TreeNode();
-                leaf.Name = n.ID.ToString();            // Name 记录 ID
                 int count = n.UnreadCount();
+
+                leaf.Name = n.ID.ToString();            // Name 记录 ID
                 leaf.Tag = count;                       // Tag 记录 未读数
+                
+                // 如果有未读的消息，则粗体显示
                 if (count > 0)
                 {
                     leaf.Text = string.Format("{0}({1})", n.Name, leaf.Tag);
@@ -52,7 +55,6 @@ namespace Leo.GUI
             treeView1.ExpandAll();
 
             dataGridView1.AutoGenerateColumns = false;
-
         }
 
         private void treeView1_MouseDown(object sender, MouseEventArgs e)
@@ -69,7 +71,7 @@ namespace Leo.GUI
                     treeMenu.Show();
                 }
 
-                if (node_id != node.Name.ToString())     // 如果显示的不是当前的结点的内容，就刷新
+                if (m_Current_Select_ID != node.Name.ToString())     // 如果显示的不是当前的结点的内容，就刷新
                 {
                     dataGridView1.RowCount = 0;
                     List<Contents> lst = Contents.Select("node_id =" + node.Name.ToString());
@@ -92,7 +94,7 @@ namespace Leo.GUI
                             dataGridView1.Rows[dataGridView1.RowCount - 1].DefaultCellStyle.Font = new Font("宋体", 9, FontStyle.Regular);
                         }
                     }
-                    node_id = node.Name.ToString();      // 记录当前结点的ID
+                    m_Current_Select_ID = node.Name.ToString();      // 记录当前结点的ID
 
                     ShowContent();
                 }
@@ -155,7 +157,7 @@ namespace Leo.GUI
             
 
             // 列表增加
-            if (e.parent_id.ToString() == node_id) ;
+            if (e.parent_id.ToString() == m_Current_Select_ID)
             {
                 dataGridView1.RowCount += 1;
                 dataGridView1.Rows[dataGridView1.RowCount - 1].Cells[0].Value = e.id;              // 这时还不知道ID，所以用0代替

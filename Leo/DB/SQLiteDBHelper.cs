@@ -41,6 +41,7 @@ namespace Leo.DB
                     command.CommandText = @"
 CREATE TABLE Nodes(
     id integer NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    parent_id integer not null,
     name varchar(255),
     url varchar(255));
 CREATE TABLE Contents(

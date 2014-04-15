@@ -199,7 +199,57 @@ namespace Leo.DB
 
             // 取得保存的内容
             string template = @"
-<HTML><HEAD><link href='../style.css'rel='stylesheet'type='text/css'></HEAD><BODY text=#000000 vLink=#990000 aLink=#990000 link=#990000 leftMargin=0 topMargin=0 marginheight=0 marginwidth=0 Bgcolor=#E7F4FE class=Body style='word-break:break-all'><table border='0'height='98'cellpadding='0'cellspacing='0'width=100%id='main'><tr><td width='100%'align='left'valign='top'><br><br></TD></TR><TR vAlign=center align=left><TD height='295'valign='top'align='left'><TABLE cellSpacing=0 borderColorDark=#999999 cellPadding=0 align=center borderColorLight=#ffffff border='0'style='line-height:150%;'WIDTH='90%'><TBODY><TR vAlign=top align=left><TD id='thetd'class='thetd'><div align='left'style='width: 100%; height: 132'><p align='left'><center><font class='article_title'>{0}</font></center><br><hr size='1'noshade color='#FF9900'><span id='content'><!--BookContent Start-->{1}<br/><br/>&nbsp;&nbsp;<!--BookContent End--><br/><br/></span></p></div></TD></TR></TBODY></TABLE></TD></TR></TABLE><br></BODY></HTML>
+<HTML>
+  <HEAD>
+    <link href='../style.css' rel='stylesheet' type='text/css'>
+  </HEAD>
+  <BODY text=#000000 vLink=#990000 aLink=#990000 link=#990000 leftMargin=0
+  topMargin=0 marginheight=0 marginwidth=0 Bgcolor=#E7F4FE class=Body style='word-break:break-all'>
+    <table border='0' height='98' cellpadding='0' cellspacing='0' width=100%id='main'>
+      <tr>
+        <td width='100%' align='left' valign='top'>
+          <br />
+          <br />
+        </TD>
+      </TR>
+      <TR vAlign=center align=left>
+        <TD height='295' valign='top' align='left'>
+          <TABLE cellSpacing=0 borderColorDark=#999999 cellPadding=0 align=center
+          borderColorLight=#ffffff border='0' style='line-height:150%;' WIDTH='90%'>
+            <TBODY>
+              <TR vAlign=top align=left>
+                <TD id='thetd' class='thetd'>
+                  <div align='left' style='width: 100%; height: 132'>
+                    <p align='left'>
+                      <center>
+                        <font class='article_title'>
+                          {0}
+                        </font>
+                      </center>
+                      <br>
+                      <hr size='1' noshade color='#FF9900'>
+                      <span id='content'>
+                        <!--BookContent Start-->
+                        {1}
+                        <br/>
+                        <br/>
+                        &nbsp;&nbsp;
+                        <!--BookContent End-->
+                        <br/>
+                        <br/>
+                      </span>
+                    </p>
+                  </div>
+                </TD>
+              </TR>
+            </TBODY>
+          </TABLE>
+        </TD>
+      </TR>
+    </TABLE>
+    <br>
+  </BODY>
+</HTML>
 ";
 
             string content = string.Format(template,
